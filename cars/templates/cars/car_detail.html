@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ car.name }} - تفاصيل السيارة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .car-detail img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .car-info {
+            text-align: center;
+        }
+        .car-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .car-info p {
+            font-size: 16px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .car-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .car-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 15px;
+            width: 200px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .car-item:hover {
+            transform: scale(1.05);
+        }
+        .car-item img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .no-image {
+            background-color: #f0f0f0;
+            padding: 60px;
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>تفاصيل السيارة</h1>
+
+<div class="container">
+    <div class="car-detail">
+        {% if car.image %}
+            <img src="{{ car.image.url }}" alt="{{ car.name }}">
+        {% else %}
+            <div class="no-image">لا توجد صورة متاحة</div>
+        {% endif %}
+    </div>
+    <div class="car-info">
+        <h2>{{ car.name }} ({{ car.year }})</h2>
+        <p>الصانع: {{ car.manufacturer.name }}</p>
+    </div>
+    <a href="{% url 'car_list' %}" class="back-link">العودة إلى قائمة السيارات</a>
+</div>
+
+<!-- قسم يعرض باقي السيارات -->
+<h2 style="text-align: center; margin-top: 40px;">باقي السيارات المتوفرة</h2>
+<div class="car-list">
+    {% for other_car in other_cars %}
+        <a href="{% url 'car_detail' other_car.id %}" class="car-item">
+            {% if other_car.image %}
+                <img src="{{ other_car.image.url }}" alt="{{ other_car.name }}">
+            {% else %}
+                <div class="no-image">لا توجد صورة متاحة</div>
+            {% endif %}
+            <div class="car-info">
+                <h2>{{ other_car.name }} ({{ other_car.year }})</h2>
+            </div>
+        </a>
+    {% endfor %}
+</div>
+
+</body>
+</html>
